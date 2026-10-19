@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Al Quran | القرآن الكريم</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f8f5;
+      color: #20382f;
+    }
+
+    header {
+      background: #145b45;
+      color: white;
+      text-align: center;
+      padding: 28px 15px;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 8px 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px #0000000d;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    select {
+      border: 1px solid #b8c9bf;
+      background: white;
+      margin-bottom: 12px;
+    }
+
+    button {
+      background: #176b50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .verse {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+      box-shadow: 0 2px 8px #0000000a;
+    }
+
+    .arabic {
+      direction: rtl;
+      text-align: right;
+      font-size: 27px;
+      line-height: 2;
+      margin-bottom: 15px;
+      color: #145b45;
+    }
+
+    .translation {
+      font-size: 17px;
+      line-height: 1.9;
+      color: #444;
+    }
+
+    .number {
+      display: inline-block;
+      background: #e4f1e9;
+      color: #145b45;
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    #status {
+      text-align: center;
+      padding: 15px;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 12px;
+      color: #65756c;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>📖 القرآن الكريم</h1>
+    <p>El Sagrado Corán</p>
+    <p>القرآن الكريم مع ترجمة المعاني إلى الإسبانية</p>
+  </header>
+
+  <main class="container">
+
+    <section class="panel">
+      <label for="surah">Elige una sura / اختاري سورة</label>
+
+      <select id="surah">
+        <option value="">Cargando las suras...</option>
+      </select>
+
+      <button id="loadButton" onclick="loadSurah()">
+        Leer la sura / قراءة السورة
+      </button>
+    </section>
+
+    <div id="status" role="status" aria-live="polite">
+      Cargando el Corán...
+    </div>
+
+    <section id="verses"></section>
+
+  </main>
+
+  <footer>
+    القرآن الكريم — Al Quran<br>
+    Texto árabe y traducción española de los significados.
+  </footer>
+
+  <script>
+    const API = "https://api.alquran.cloud/v1";
+
+    const surahSelect = document.getElementById("surah");
+    const versesContainer = document.getElementById("verses");
+    const statusBox = document.getElementById("status");
+    const loadButton = document.getElementById("loadButton");
+
+    async function getSurahs() {
+      try {
+        statusBox.textContent = "Cargando la lista de suras...";
+
+        const response = await fetch(`${API}/surah`);
+
+        if (!response.ok) {
+          throw new Error("No se pudo conectar");
+        }
+
+        const result = await response.json();
+
+        surahSelect.innerHTML = "";
+
+        result.data.forEach(surah => {
+          const option = document.createElement("option");
+
+          option.value = surah.number;
+          option.textContent =
+            `${surah.number}. ${surah.name} — ${surah.englishName}`;
+
+          surahSelect.appendChild(option);
+        });
+
+        statusBox.textContent =
+          "Elige una sura para leer el texto árabe y su traducción.";
+
+        await loadSurah();
+
+      } catch (error) {
+        statusBox.textContent =
+          "No se pudieron cargar las suras. Comprueba tu conexión a Internet e inténtalo de nuevo.";
+      }
+    }
+
+    async function loadSurah() {
+      const number = surahSelect.value;
+
+      if (!number) return;
+
+      loadButton.disabled = true;
+      versesContainer.replaceChildren();
+      statusBox.textContent = "Cargando los versículos...";
+      
+      try {
+        const response = await fetch(
+          `${API}/surah/${number}/editions/quran-uthmani,es.cortes`
+        );
+
+        if (!response.ok) {
+          throw new Error("Error al cargar la sura");
+        }
+
+        const result = await response.json();
+
+        const arabicData = result.data[0];
+        const spanishData = result.data[1];
+
+        if (!arabicData || !spanishData) {
+          throw new Error("No se encontraron los textos");
+        }
+
+        statusBox.textContent =
+          `${arabicData.name} — ${arabicData.englishName}`;
+
+        arabicData.ayahs.forEach((ayah, index) => {
+          const spanishAyah = spanishData.ayahs[index];
+
+          const card = document.createElement("article");
+          card.className = "verse";
+
+          const numberLabel = document.createElement("div");
+          numberLabel.className = "number";
+          numberLabel.textContent = `Versículo ${ayah.numberInSurah}`;
+
+          const arabicText = document.createElement("div");
+          arabicText.className = "arabic";
+          arabicText.lang = "ar";
+          arabicText.textContent = ayah.text;
+
+          const spanishText = document.createElement("div");
+          spanishText.className = "translation";
+          spanishText.lang = "es";
+          spanishText.textContent =
+            spanishAyah ? spanishAyah.text :
+            "Traducción no disponible.";
+
+          card.append(numberLabel, arabicText, spanishText);
+          versesContainer.appendChild(card);
+        });
+
+        statusBox.textContent =
+          `${arabicData.name} — ${arabicData.englishName}. ` +
+          `${arabicData.ayahs.length} versículos.`;
+
+      } catch (error) {
+        statusBox.textContent =
+          "No se pudo cargar la traducción. Comprueba tu conexión e inténtalo de nuevo.";
+      } finally {
+        loadButton.disabled = false;
+      }
+    }
+
+    getSurahs();
+  </script>
+
+</body>
+</html>
