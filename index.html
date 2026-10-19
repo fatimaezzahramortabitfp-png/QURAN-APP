@@ -16,6 +16,7 @@ nav{position:sticky;top:0;background:white;display:flex;justify-content:center;g
 button,select{padding:10px 13px;border-radius:10px;border:1px solid #d8bd78;font-size:15px}
 button{background:var(--g);color:white;cursor:pointer}
 button:hover{background:#087452}
+button:disabled{opacity:.5;cursor:wait}
 select{background:white;max-width:100%}
 main{max-width:850px;margin:auto;padding:12px}
 .card{background:white;border:1px solid #e9ddb9;border-radius:15px;padding:17px;margin:15px 0;box-shadow:0 4px 15px #153d2910}
@@ -56,17 +57,22 @@ footer{text-align:center;padding:24px;color:#777}
 <section id="quran" class="page">
 <div class="card">
 <h2>📖 القرآن الكريم</h2>
-<p>القرآن بالعربية مع الترجمة الإسبانية وتلاوة الشيخ عبد الرحمن السديس.</p>
+<p>القرآن بالعربية مع الترجمة الإسبانية وتلاوة القارئ المغربي عمر القزابري برواية ورش.</p>
 <div class="row">
 <select id="surah" aria-label="اختيار السورة"></select>
 <button onclick="loadSurah()">عرض السورة</button>
 </div>
 <p id="status" class="small">جاري تحميل السور...</p>
+<div class="row">
+<button id="fullBtn" onclick="playFullSurah()">▶ تشغيل السورة كاملة — عمر القزابري</button>
+<button onclick="stopAudio()">⏹ إيقاف</button>
+</div>
+<p class="small">التشغيل الكامل تسجيل للسورة. زر استماع تحت كل آية يشغّل الآية بصوت الشيخ عبد الرحمن السديس.</p>
 </div>
 <div id="verses" class="card">اختاري سورة لعرض الآيات.</div>
 <div class="card">
 <h3>🔊 التلاوة</h3>
-<p id="playing">اختاري آية واضغطي على استماع.</p>
+<p id="playing">اختاري سورة كاملة أو اضغطي على استماع تحت آية.</p>
 <audio id="audio" controls preload="none"></audio>
 </div>
 </section>
@@ -90,6 +96,7 @@ footer{text-align:center;padding:24px;color:#777}
 <button onclick="adhkar('evening')">أذكار المساء</button>
 <button onclick="adhkar('sleep')">أذكار النوم</button>
 </div>
+<p class="small">يمكنك الضغط على «استمع للذكر» لسماعه بالصوت المتاح في جهازك، وليس كتسجيل لقارئ.</p>
 <div id="dhikr"></div>
 </div>
 </section>
@@ -101,23 +108,28 @@ footer{text-align:center;padding:24px;color:#777}
 <div class="ar">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
 <p class="es">Señor nuestro, danos bienestar en esta vida y en la otra, y protégenos del castigo del Fuego.</p>
 <p class="small">البقرة 2:201</p>
+<button onclick="speak('رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ')">🔊 استمع</button>
 </div>
 <div class="dua">
 <div class="ar">رَبِّ زِدْنِي عِلْمًا</div>
 <p class="es">¡Señor mío! Aumenta mi conocimiento.</p>
 <p class="small">طه 20:114</p>
+<button onclick="speak('رَبِّ زِدْنِي عِلْمًا')">🔊 استمع</button>
 </div>
 <div class="dua">
 <div class="ar">رَبَّنَا اغْفِرْ لَنَا وَلِوَالِدِينَا وَلِلْمُؤْمِنِينَ</div>
 <p class="es">¡Señor nuestro! Perdónanos, a nuestros padres y a los creyentes.</p>
+<button onclick="speak('رَبَّنَا اغْفِرْ لَنَا وَلِوَالِدِينَا وَلِلْمُؤْمِنِينَ')">🔊 استمع</button>
 </div>
 <div class="dua">
 <div class="ar">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ</div>
 <p class="es">Oh Allah, te pido perdón y bienestar.</p>
+<button onclick="speak('اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ')">🔊 استمع</button>
 </div>
 <div class="dua">
 <div class="ar">رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً</div>
 <p class="es">Señor nuestro, no desvíes nuestros corazones después de guiarnos y concédenos Tu misericordia.</p>
+<button onclick="speak('رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً')">🔊 استمع</button>
 </div>
 </div>
 </section>
@@ -127,7 +139,9 @@ footer{text-align:center;padding:24px;color:#777}
 
 <script>
 const API="https://api.alquran.cloud/v1";
+const OMAR_SERVER="https://server9.mp3quran.net/omar_warsh/";
 let current=1;
+let fullSurahPlaying=false;
 
 function page(id){
  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
@@ -139,7 +153,7 @@ function page(id){
 async function init(){
  try{
   const r=await fetch(API+"/surah");
-  if(!r.ok)throw Error();
+  if(!r.ok)throw Error("surah list");
   const j=await r.json();
   const s=document.getElementById("surah");
   j.data.forEach(x=>{
@@ -158,6 +172,7 @@ async function init(){
 async function loadSurah(){
  const s=document.getElementById("surah");
  current=Number(s.value||1);
+ stopAudio();
  const out=document.getElementById("verses");
  const status=document.getElementById("status");
  out.textContent="جاري تحميل السورة...";
@@ -167,7 +182,7 @@ async function loadSurah(){
    fetch(API+"/surah/"+current+"/quran-uthmani"),
    fetch(API+"/surah/"+current+"/es.cortes")
   ]);
-  if(responses.some(r=>!r.ok))throw Error();
+  if(responses.some(r=>!r.ok))throw Error("surah");
   const ar=await responses[0].json();
   const es=await responses[1].json();
   out.replaceChildren();
@@ -184,7 +199,7 @@ async function loadSurah(){
    trans.className="es";
    trans.textContent=es.data.ayahs[i]?.text||"";
    const btn=document.createElement("button");
-   btn.textContent="▶ استماع";
+   btn.textContent="▶ استماع للآية";
    btn.onclick=()=>playAyah(a.number,ar.data.name,a.numberInSurah);
    item.append(arab,trans,btn);
    out.appendChild(item);
@@ -199,18 +214,57 @@ async function loadSurah(){
 async function playAyah(number,name,ayah){
  const player=document.getElementById("audio");
  const label=document.getElementById("playing");
+ fullSurahPlaying=false;
+ player.pause();
  label.textContent="جاري تحميل التلاوة...";
  try{
   const r=await fetch(API+"/ayah/"+number+"/ar.abdurrahmaansudais");
-  if(!r.ok)throw Error();
+  if(!r.ok)throw Error("ayah audio");
   const j=await r.json();
-  if(!j.data.audio)throw Error();
+  if(!j.data.audio)throw Error("no audio");
   player.src=j.data.audio;
   label.textContent="السورة "+name+"، الآية "+ayah+" — عبد الرحمن السديس";
   await player.play();
  }catch(e){
-  label.textContent="تعذر تشغيل الصوت حالياً. جربي مرة أخرى أو تحققي من اتصال الإنترنت.";
+  label.textContent="تعذر تشغيل صوت الآية حالياً. تحققي من الإنترنت وحاولي مرة أخرى.";
  }
+}
+
+function playFullSurah(){
+ const player=document.getElementById("audio");
+ const label=document.getElementById("playing");
+ const btn=document.getElementById("fullBtn");
+ const file=String(current).padStart(3,"0")+".mp3";
+ fullSurahPlaying=true;
+ player.pause();
+ player.src=OMAR_SERVER+file;
+ player.load();
+ label.textContent="تلاوة السورة كاملة — عمر القزابري، رواية ورش.";
+ btn.disabled=true;
+ player.onended=()=>{btn.disabled=false;fullSurahPlaying=false;};
+ player.onerror=()=>{
+  btn.disabled=false;
+  fullSurahPlaying=false;
+  label.textContent="تعذر تشغيل تسجيل السورة. جرّبي مرة أخرى أو اختاري سورة أخرى.";
+ };
+ player.play().then(()=>{
+  label.textContent="تلاوة السورة كاملة — عمر القزابري، رواية ورش.";
+ }).catch(()=>{
+  btn.disabled=false;
+  label.textContent="اضغطي على زر التشغيل في مشغل الصوت للبدء.";
+ });
+}
+
+function stopAudio(){
+ const player=document.getElementById("audio");
+ player.pause();
+ player.currentTime=0;
+ player.onended=null;
+ player.onerror=null;
+ fullSurahPlaying=false;
+ const btn=document.getElementById("fullBtn");
+ if(btn)btn.disabled=false;
+ document.getElementById("playing").textContent="تم إيقاف التلاوة.";
 }
 
 async function loadPrayer(){
@@ -220,23 +274,21 @@ async function loadPrayer(){
  try{
   const url="https://api.aladhan.com/v1/timingsByCity?city=Alicante&country=Spain&method=3";
   const r=await fetch(url);
-  if(!r.ok)throw Error();
+  if(!r.ok)throw Error("prayer times");
   const j=await r.json();
   const d=j.data;
-  document.getElementById("date").textContent=
-   "التاريخ: "+d.date.readable+" · "+d.date.hijri.date;
+  document.getElementById("date").textContent="التاريخ: "+d.date.readable+" · "+d.date.hijri.date;
   times.replaceChildren();
-  [["الفجر","Fajr"],["الشروق","Sunrise"],["الظهر","Dhuhr"],
-   ["العصر","Asr"],["المغرب","Maghrib"],["العشاء","Isha"]].forEach(([ar,en])=>{
-    const box=document.createElement("div");
-    box.className="time";
-    const b=document.createElement("b");
-    b.textContent=ar;
-    const t=document.createElement("span");
-    t.textContent=d.timings[en].split(" ")[0];
-    box.append(b,t);
-    times.appendChild(box);
-   });
+  [["الفجر","Fajr"],["الشروق","Sunrise"],["الظهر","Dhuhr"],["العصر","Asr"],["المغرب","Maghrib"],["العشاء","Isha"]].forEach(([ar,en])=>{
+   const box=document.createElement("div");
+   box.className="time";
+   const b=document.createElement("b");
+   b.textContent=ar;
+   const t=document.createElement("span");
+   t.textContent=d.timings[en].split(" ")[0];
+   box.append(b,t);
+   times.appendChild(box);
+  });
  }catch(e){
   times.textContent="تعذر تحميل المواقيت. تحققي من الإنترنت وحاولي مرة أخرى.";
   document.getElementById("date").textContent="مواقيت الصلاة لمدينة Alicante";
@@ -276,10 +328,26 @@ function adhkar(type){
   const p=document.createElement("p");
   p.className="small";
   p.textContent=count;
-  d.append(a,p);
+  const btn=document.createElement("button");
+  btn.textContent="🔊 استمع للذكر";
+  btn.onclick=()=>speak(text);
+  d.append(a,p,btn);
   out.appendChild(d);
  });
 }
+
+function speak(text){
+ if(!("speechSynthesis" in window)){
+  alert("الصوت الآلي غير متاح في هذا الجهاز.");
+  return;
+ }
+ window.speechSynthesis.cancel();
+ const utterance=new SpeechSynthesisUtterance(text);
+ utterance.lang="ar-SA";
+ utterance.rate=0.8;
+ window.speechSynthesis.speak(utterance);
+}
+
 init();
 </script>
 </body>
