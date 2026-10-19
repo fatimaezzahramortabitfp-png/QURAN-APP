@@ -1,279 +1,286 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Al Quran | القرآن الكريم</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f8f5;
-      color: #20382f;
-    }
-
-    header {
-      background: #145b45;
-      color: white;
-      text-align: center;
-      padding: 28px 15px;
-    }
-
-    header h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
-    }
-
-    header p {
-      margin: 8px 0;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
-
-    .panel {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 3px 12px #0000000d;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    select, button {
-      width: 100%;
-      padding: 13px;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    select {
-      border: 1px solid #b8c9bf;
-      background: white;
-      margin-bottom: 12px;
-    }
-
-    button {
-      background: #176b50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .verse {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
-      box-shadow: 0 2px 8px #0000000a;
-    }
-
-    .arabic {
-      direction: rtl;
-      text-align: right;
-      font-size: 27px;
-      line-height: 2;
-      margin-bottom: 15px;
-      color: #145b45;
-    }
-
-    .translation {
-      font-size: 17px;
-      line-height: 1.9;
-      color: #444;
-    }
-
-    .number {
-      display: inline-block;
-      background: #e4f1e9;
-      color: #145b45;
-      padding: 5px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-
-    #status {
-      text-align: center;
-      padding: 15px;
-      line-height: 1.7;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 12px;
-      color: #65756c;
-      font-size: 14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#064e3b">
+<title>نور القرآن | Noor Quran</title>
+<style>
+:root{--g:#064e3b;--gold:#d8b66a;--bg:#fffaf0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#173d2e;font-family:Arial,sans-serif;line-height:1.8}
+header{background:linear-gradient(135deg,#032d23,#087452);color:white;text-align:center;padding:25px 12px;border-bottom:4px solid var(--gold)}
+header h1{margin:0;font-size:29px;color:#f4d990}
+header p{margin:5px}
+nav{position:sticky;top:0;background:white;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:12px;box-shadow:0 2px 8px #0001;z-index:5}
+button,select{padding:10px 13px;border-radius:10px;border:1px solid #d8bd78;font-size:15px}
+button{background:var(--g);color:white;cursor:pointer}
+button:hover{background:#087452}
+select{background:white;max-width:100%}
+main{max-width:850px;margin:auto;padding:12px}
+.card{background:white;border:1px solid #e9ddb9;border-radius:15px;padding:17px;margin:15px 0;box-shadow:0 4px 15px #153d2910}
+h2,h3{color:var(--g)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row select{flex:1;min-width:180px}
+.ar{font-family:"Times New Roman",serif;font-size:28px;line-height:2.1;text-align:right;direction:rtl;color:#124b37}
+.ayah{padding:16px 0;border-bottom:1px solid #eee4ca}
+.es{color:#59655d;font-size:15px}
+.small{font-size:13px;color:#777}
+.hidden{display:none}
+audio{width:100%;margin-top:8px}
+.times{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.time{background:#f5f1df;padding:12px;text-align:center;border-radius:12px}
+.time b{display:block;color:var(--g)}
+.time span{font-size:21px;color:#a17b28}
+.dua{padding:12px;border-left:4px solid var(--gold);background:#fffdf6;margin:12px 0}
+footer{text-align:center;padding:24px;color:#777}
+@media(min-width:600px){.times{grid-template-columns:repeat(3,1fr)}}
+</style>
 </head>
-
 <body>
+<header>
+<div style="font-size:34px">☾ ✦</div>
+<h1>نور القرآن</h1>
+<p>القرآن الكريم · قرآن y traducción española</p>
+<p>📖 تلاوة وذكر وطمأنينة 🕌</p>
+</header>
 
-  <header>
-    <h1>📖 القرآن الكريم</h1>
-    <p>El Sagrado Corán</p>
-    <p>القرآن الكريم مع ترجمة المعاني إلى الإسبانية</p>
-  </header>
+<nav>
+<button onclick="page('quran')">📖 القرآن</button>
+<button onclick="page('prayer')">🕌 الصلاة</button>
+<button onclick="page('adhkar')">🤲 الأذكار</button>
+<button onclick="page('duas')">🌙 الأدعية</button>
+</nav>
 
-  <main class="container">
+<main>
+<section id="quran" class="page">
+<div class="card">
+<h2>📖 القرآن الكريم</h2>
+<p>القرآن بالعربية مع الترجمة الإسبانية وتلاوة الشيخ عبد الرحمن السديس.</p>
+<div class="row">
+<select id="surah" aria-label="اختيار السورة"></select>
+<button onclick="loadSurah()">عرض السورة</button>
+</div>
+<p id="status" class="small">جاري تحميل السور...</p>
+</div>
+<div id="verses" class="card">اختاري سورة لعرض الآيات.</div>
+<div class="card">
+<h3>🔊 التلاوة</h3>
+<p id="playing">اختاري آية واضغطي على استماع.</p>
+<audio id="audio" controls preload="none"></audio>
+</div>
+</section>
 
-    <section class="panel">
-      <label for="surah">Elige una sura / اختاري سورة</label>
+<section id="prayer" class="page hidden">
+<div class="card">
+<h2>🕌 مواقيت الصلاة</h2>
+<p>📍 Alicante, España</p>
+<p id="date">جاري تحميل المواقيت...</p>
+<div id="times" class="times"></div>
+<p class="small">قد تختلف المواقيت قليلاً حسب طريقة الحساب المحلية.</p>
+<button onclick="loadPrayer()">تحديث المواقيت</button>
+</div>
+</section>
 
-      <select id="surah">
-        <option value="">Cargando las suras...</option>
-      </select>
+<section id="adhkar" class="page hidden">
+<div class="card">
+<h2>🤲 الأذكار اليومية</h2>
+<div class="row">
+<button onclick="adhkar('morning')">أذكار الصباح</button>
+<button onclick="adhkar('evening')">أذكار المساء</button>
+<button onclick="adhkar('sleep')">أذكار النوم</button>
+</div>
+<div id="dhikr"></div>
+</div>
+</section>
 
-      <button id="loadButton" onclick="loadSurah()">
-        Leer la sura / قراءة السورة
-      </button>
-    </section>
+<section id="duas" class="page hidden">
+<div class="card">
+<h2>🌙 أدعية</h2>
+<div class="dua">
+<div class="ar">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
+<p class="es">Señor nuestro, danos bienestar en esta vida y en la otra, y protégenos del castigo del Fuego.</p>
+<p class="small">البقرة 2:201</p>
+</div>
+<div class="dua">
+<div class="ar">رَبِّ زِدْنِي عِلْمًا</div>
+<p class="es">¡Señor mío! Aumenta mi conocimiento.</p>
+<p class="small">طه 20:114</p>
+</div>
+<div class="dua">
+<div class="ar">رَبَّنَا اغْفِرْ لَنَا وَلِوَالِدِينَا وَلِلْمُؤْمِنِينَ</div>
+<p class="es">¡Señor nuestro! Perdónanos, a nuestros padres y a los creyentes.</p>
+</div>
+<div class="dua">
+<div class="ar">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ</div>
+<p class="es">Oh Allah, te pido perdón y bienestar.</p>
+</div>
+<div class="dua">
+<div class="ar">رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً</div>
+<p class="es">Señor nuestro, no desvíes nuestros corazones después de guiarnos y concédenos Tu misericordia.</p>
+</div>
+</div>
+</section>
+</main>
 
-    <div id="status" role="status" aria-live="polite">
-      Cargando el Corán...
-    </div>
+<footer>نور القرآن · Noor Quran<br>موقع مجاني للقراءة والذكر والتدبر</footer>
 
-    <section id="verses"></section>
+<script>
+const API="https://api.alquran.cloud/v1";
+let current=1;
 
-  </main>
+function page(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="prayer")loadPrayer();
+}
 
-  <footer>
-    القرآن الكريم — Al Quran<br>
-    Texto árabe y traducción española de los significados.
-  </footer>
+async function init(){
+ try{
+  const r=await fetch(API+"/surah");
+  if(!r.ok)throw Error();
+  const j=await r.json();
+  const s=document.getElementById("surah");
+  j.data.forEach(x=>{
+   const o=document.createElement("option");
+   o.value=x.number;
+   o.textContent=x.number+". "+x.name+" — "+x.englishName;
+   s.appendChild(o);
+  });
+  document.getElementById("status").textContent="اختاري سورة للبدء.";
+  await loadSurah();
+ }catch(e){
+  document.getElementById("status").textContent="تعذر تحميل السور. تأكدي من الإنترنت وأعيدي تحميل الصفحة.";
+ }
+}
 
-  <script>
-    const API = "https://api.alquran.cloud/v1";
+async function loadSurah(){
+ const s=document.getElementById("surah");
+ current=Number(s.value||1);
+ const out=document.getElementById("verses");
+ const status=document.getElementById("status");
+ out.textContent="جاري تحميل السورة...";
+ status.textContent="جاري التحميل...";
+ try{
+  const responses=await Promise.all([
+   fetch(API+"/surah/"+current+"/quran-uthmani"),
+   fetch(API+"/surah/"+current+"/es.cortes")
+  ]);
+  if(responses.some(r=>!r.ok))throw Error();
+  const ar=await responses[0].json();
+  const es=await responses[1].json();
+  out.replaceChildren();
+  const title=document.createElement("h2");
+  title.textContent=ar.data.name+" — "+ar.data.englishName;
+  out.appendChild(title);
+  ar.data.ayahs.forEach((a,i)=>{
+   const item=document.createElement("article");
+   item.className="ayah";
+   const arab=document.createElement("div");
+   arab.className="ar";
+   arab.textContent=a.text+" ۝ "+a.numberInSurah;
+   const trans=document.createElement("p");
+   trans.className="es";
+   trans.textContent=es.data.ayahs[i]?.text||"";
+   const btn=document.createElement("button");
+   btn.textContent="▶ استماع";
+   btn.onclick=()=>playAyah(a.number,ar.data.name,a.numberInSurah);
+   item.append(arab,trans,btn);
+   out.appendChild(item);
+  });
+  status.textContent="تم تحميل السورة.";
+ }catch(e){
+  out.textContent="تعذر تحميل السورة أو الترجمة. تحققي من الإنترنت ثم أعيدي المحاولة.";
+  status.textContent="حدث خطأ أثناء التحميل.";
+ }
+}
 
-    const surahSelect = document.getElementById("surah");
-    const versesContainer = document.getElementById("verses");
-    const statusBox = document.getElementById("status");
-    const loadButton = document.getElementById("loadButton");
+async function playAyah(number,name,ayah){
+ const player=document.getElementById("audio");
+ const label=document.getElementById("playing");
+ label.textContent="جاري تحميل التلاوة...";
+ try{
+  const r=await fetch(API+"/ayah/"+number+"/ar.abdurrahmaansudais");
+  if(!r.ok)throw Error();
+  const j=await r.json();
+  if(!j.data.audio)throw Error();
+  player.src=j.data.audio;
+  label.textContent="السورة "+name+"، الآية "+ayah+" — عبد الرحمن السديس";
+  await player.play();
+ }catch(e){
+  label.textContent="تعذر تشغيل الصوت حالياً. جربي مرة أخرى أو تحققي من اتصال الإنترنت.";
+ }
+}
 
-    async function getSurahs() {
-      try {
-        statusBox.textContent = "Cargando la lista de suras...";
+async function loadPrayer(){
+ const times=document.getElementById("times");
+ document.getElementById("date").textContent="جاري تحميل المواقيت...";
+ times.textContent="...";
+ try{
+  const url="https://api.aladhan.com/v1/timingsByCity?city=Alicante&country=Spain&method=3";
+  const r=await fetch(url);
+  if(!r.ok)throw Error();
+  const j=await r.json();
+  const d=j.data;
+  document.getElementById("date").textContent=
+   "التاريخ: "+d.date.readable+" · "+d.date.hijri.date;
+  times.replaceChildren();
+  [["الفجر","Fajr"],["الشروق","Sunrise"],["الظهر","Dhuhr"],
+   ["العصر","Asr"],["المغرب","Maghrib"],["العشاء","Isha"]].forEach(([ar,en])=>{
+    const box=document.createElement("div");
+    box.className="time";
+    const b=document.createElement("b");
+    b.textContent=ar;
+    const t=document.createElement("span");
+    t.textContent=d.timings[en].split(" ")[0];
+    box.append(b,t);
+    times.appendChild(box);
+   });
+ }catch(e){
+  times.textContent="تعذر تحميل المواقيت. تحققي من الإنترنت وحاولي مرة أخرى.";
+  document.getElementById("date").textContent="مواقيت الصلاة لمدينة Alicante";
+ }
+}
 
-        const response = await fetch(`${API}/surah`);
+const dhikrData={
+ morning:[
+  ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ","مرة واحدة"],
+  ["سُبْحَانَ اللَّهِ وَبِحَمْدِهِ","100 مرة"],
+  ["اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ","مرة واحدة"],
+  ["أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ","كررها"]
+ ],
+ evening:[
+  ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ","مرة واحدة"],
+  ["سُبْحَانَ اللَّهِ وَبِحَمْدِهِ","100 مرة"],
+  ["أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ","3 مرات"],
+  ["أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ","كررها"]
+ ],
+ sleep:[
+  ["بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا","قبل النوم"],
+  ["سُبْحَانَ اللَّهِ","33 مرة"],
+  ["الْحَمْدُ لِلَّهِ","33 مرة"],
+  ["اللَّهُ أَكْبَرُ","34 مرة"]
+ ]
+};
 
-        if (!response.ok) {
-          throw new Error("No se pudo conectar");
-        }
-
-        const result = await response.json();
-
-        surahSelect.innerHTML = "";
-
-        result.data.forEach(surah => {
-          const option = document.createElement("option");
-
-          option.value = surah.number;
-          option.textContent =
-            `${surah.number}. ${surah.name} — ${surah.englishName}`;
-
-          surahSelect.appendChild(option);
-        });
-
-        statusBox.textContent =
-          "Elige una sura para leer el texto árabe y su traducción.";
-
-        await loadSurah();
-
-      } catch (error) {
-        statusBox.textContent =
-          "No se pudieron cargar las suras. Comprueba tu conexión a Internet e inténtalo de nuevo.";
-      }
-    }
-
-    async function loadSurah() {
-      const number = surahSelect.value;
-
-      if (!number) return;
-
-      loadButton.disabled = true;
-      versesContainer.replaceChildren();
-      statusBox.textContent = "Cargando los versículos...";
-      
-      try {
-        const response = await fetch(
-          `${API}/surah/${number}/editions/quran-uthmani,es.cortes`
-        );
-
-        if (!response.ok) {
-          throw new Error("Error al cargar la sura");
-        }
-
-        const result = await response.json();
-
-        const arabicData = result.data[0];
-        const spanishData = result.data[1];
-
-        if (!arabicData || !spanishData) {
-          throw new Error("No se encontraron los textos");
-        }
-
-        statusBox.textContent =
-          `${arabicData.name} — ${arabicData.englishName}`;
-
-        arabicData.ayahs.forEach((ayah, index) => {
-          const spanishAyah = spanishData.ayahs[index];
-
-          const card = document.createElement("article");
-          card.className = "verse";
-
-          const numberLabel = document.createElement("div");
-          numberLabel.className = "number";
-          numberLabel.textContent = `Versículo ${ayah.numberInSurah}`;
-
-          const arabicText = document.createElement("div");
-          arabicText.className = "arabic";
-          arabicText.lang = "ar";
-          arabicText.textContent = ayah.text;
-
-          const spanishText = document.createElement("div");
-          spanishText.className = "translation";
-          spanishText.lang = "es";
-          spanishText.textContent =
-            spanishAyah ? spanishAyah.text :
-            "Traducción no disponible.";
-
-          card.append(numberLabel, arabicText, spanishText);
-          versesContainer.appendChild(card);
-        });
-
-        statusBox.textContent =
-          `${arabicData.name} — ${arabicData.englishName}. ` +
-          `${arabicData.ayahs.length} versículos.`;
-
-      } catch (error) {
-        statusBox.textContent =
-          "No se pudo cargar la traducción. Comprueba tu conexión e inténtalo de nuevo.";
-      } finally {
-        loadButton.disabled = false;
-      }
-    }
-
-    getSurahs();
-  </script>
-
+function adhkar(type){
+ const out=document.getElementById("dhikr");
+ out.replaceChildren();
+ dhikrData[type].forEach(([text,count])=>{
+  const d=document.createElement("div");
+  d.className="dua";
+  const a=document.createElement("div");
+  a.className="ar";
+  a.textContent=text;
+  const p=document.createElement("p");
+  p.className="small";
+  p.textContent=count;
+  d.append(a,p);
+  out.appendChild(d);
+ });
+}
+init();
+</script>
 </body>
 </html>
